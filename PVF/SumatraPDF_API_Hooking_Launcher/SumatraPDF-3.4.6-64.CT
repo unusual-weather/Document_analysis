@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="42">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>0</ID>
+      <Description>"Auto Assemble script"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+alloc(hook,512)
+registersymbol(hook)
+alloc(pointer,81920)
+registersymbol(pointer)
+alloc(offset,4)
+registersymbol(offset)
+label(ret_addr)
+
+offset:
+dd 0
+
+hook:
+push rax
+push rsi
+push rcx
+push rdi
+mov rax,[offset]
+lea rsi,qword ptr[pointer]
+add rsi,rax
+add rax,100
+mov [offset],rax
+mov rcx,100
+
+loopa:
+mov rax,[rdi]
+mov [rsi],rax
+inc rsi
+inc rdi
+loop loopa
+
+pop rdi
+pop rcx
+pop rsi
+pop rax
+jmp ret_addr
+
+shell32.ShellExecuteExW:
+jmp hook
+ret_addr:
+ret
+
+[DISABLE]
+shell32.ShellExecuteExW:
+mov [rsp+10],rbx
+mov [rsp+18],rsi
+mov [rsp+20],rdi
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>1</ID>
+          <Description>"No description"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>4 Bytes</VariableType>
+          <Address>offset</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>2</ID>
+          <Description>"No description"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>String</VariableType>
+          <Length>100</Length>
+          <Unicode>1</Unicode>
+          <CodePage>0</CodePage>
+          <ZeroTerminate>1</ZeroTerminate>
+          <Address>pointer</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
